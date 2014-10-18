@@ -1,0 +1,20 @@
+﻿<Window x:Class="DPIHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DPIHelper"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <local:DpiDecorator>
+            <Grid>
+                <TextBlock Text="With DPI decorator" FontSize="20"/>
+                <Button Content="Window" Click="btnOpenWindow_Click" Width="100" Height="50"/>
+            </Grid>
+        </local:DpiDecorator>
+        <TextBlock Text="Without DPI decorator" FontSize="20" Grid.Row="1"/>
+        <Button Content="Window" Click="btnOpenWindow_Click" Width="100" Height="50" Grid.Row="1"/>
+    </Grid>
+</Window>
