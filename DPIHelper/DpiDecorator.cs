@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +11,32 @@ namespace DPIHelper
 {
     public class DpiDecorator : Decorator
     {
-        public DpiDecorator()
-        {
-            this.Loaded += (s, e) =>
-            {
-                Matrix m = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
-                ScaleTransform dpiTransform = new ScaleTransform(1 / m.M11, 1 / m.M22);
-                if (dpiTransform.CanFreeze)
-                    dpiTransform.Freeze();
-                this.LayoutTransform = dpiTransform;
-            };
-        }
-    }
+      public DpiDecorator()
+      {
+         Loaded += OnLoaded;
+         Unloaded -= OnLoaded;
+      }
+
+
+      private void OnLoaded(object sender, RoutedEventArgs e)
+      {
+         if (null != e)
+            e.Handled = true;
+
+
+         var source = PresentationSource.FromVisual(this);
+
+         if (null != source && null != source.CompositionTarget)
+         {
+            var matrix = source.CompositionTarget.TransformToDevice;
+
+            var dpiTransform = new ScaleTransform(1 / matrix.M11, 1 / matrix.M22);
+
+            if (dpiTransform.CanFreeze)
+               dpiTransform.Freeze();
+
+            LayoutTransform = dpiTransform;
+         }
+      }
+   }
 }
